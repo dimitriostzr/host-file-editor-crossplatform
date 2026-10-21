@@ -1,0 +1,11 @@
+# Everything is LF in the repository and in every checkout, including on Windows, where
+# Git would otherwise convert to CRLF and the formatting check in CI would fail.
+* text=auto eol=lf
+
+# Hosts fixtures encode exact line endings on purpose: the parser guarantees a byte-identical
+# round-trip, and the Windows fixture must stay CRLF. Any normalisation here silently converts
+# that test into a duplicate of the LF one.
+tests/fixtures/hosts/*.hosts -text
+
+# Keep shipped shell/polkit helpers LF on every platform; they run on macOS and Linux.
+*.sh text eol=lf

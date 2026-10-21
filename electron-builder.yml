@@ -1,0 +1,82 @@
+# Packaging for the GitHub release builds (.github/workflows/release.yml). Builds are unsigned:
+# there is no Apple Developer ID or Windows code-signing certificate behind this project, so
+# macOS gets an ad-hoc signature (enough for Apple silicon to run it) and Windows none.
+
+appId: eu.flosforge.hostserrer
+productName: hostserrer
+copyright: Copyright © 2026 Dimitrios T
+
+directories:
+  output: release
+  buildResources: resources
+
+files:
+  - out/**/*
+  # Loaded at runtime for the window icon (src/main/index.ts).
+  - resources/icon.png
+
+# Licence texts beside the executable, where Electron's own notices also land.
+extraFiles:
+  - from: LICENSE
+    to: LICENSE.hostserrer.txt
+  - from: out/renderer/THIRD_PARTY_NOTICES.txt
+    to: THIRD_PARTY_NOTICES.txt
+
+# Keeps Electron's and Chromium's licence files in the macOS bundle (see the script).
+afterExtract: ./scripts/after-extract.cjs
+
+asar: true
+npmRebuild: false
+publish: null
+
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+
+mac:
+  category: public.app-category.developer-tools
+  icon: resources/icon.icns
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+    - target: zip
+      arch: [arm64, x64]
+  identity: '-'
+  # Ad-hoc signing with hardened runtime enforces library validation, which rejects
+  # Electron's own pre-signed frameworks. Hardened runtime only matters for notarisation.
+  hardenedRuntime: false
+
+win:
+  icon: resources/icon.ico
+  target:
+    - nsis
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  license: LICENSE
+
+# The current AppImage runtime: one static binary with no libz or libfuse2 requirement, so the
+# AppImage starts on distributions that no longer ship libfuse2. The default (legacy) arm64
+# runtime links against libz.so, which only development packages provide.
+toolsets:
+  appimage: '1.0.3'
+
+linux:
+  icon: resources/icon.png
+  syncDesktopName: true
+  category: Development
+  maintainer: Dimitrios T <hello@flosforge.eu>
+  synopsis: Hosts file manager with a record library, packages and a diff preview
+  target:
+    - AppImage
+    - deb
+
+# Turn off the Electron features a desktop app like this never uses, so the shipped binary
+# cannot be repurposed as a general Node runtime or have code injected through the environment.
+electronFuses:
+  runAsNode: false
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  onlyLoadAppFromAsar: true
+  enableCookieEncryption: true
+  resetAdHocDarwinSignature: true

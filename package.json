@@ -1,0 +1,68 @@
+{
+  "name": "hostserrer",
+  "version": "0.1.0",
+  "description": "Hosts file manager for macOS, Windows and Linux: a record library, composable packages, an ordered stack, and a diff preview before every write",
+  "keywords": [
+    "hosts",
+    "hosts-file",
+    "etc-hosts",
+    "dns",
+    "electron",
+    "desktop",
+    "cross-platform",
+    "developer-tools",
+    "network"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit && tsc -p src/renderer/tsconfig.json --noEmit",
+    "format": "prettier --write .",
+    "check": "npm run typecheck && npm run format:check && npm run test",
+    "format:check": "prettier --check .",
+    "demo": "tsx scripts/demo.ts",
+    "demo:app": "tsx scripts/demo-app.ts",
+    "dev": "node scripts/launch.mjs dev",
+    "start": "node scripts/launch.mjs preview",
+    "build:app": "node scripts/launch.mjs build",
+    "dist": "node scripts/launch.mjs build && electron-builder --publish never"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimitriostzr/host-file-editor-crossplatform.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/dimitriostzr/host-file-editor-crossplatform#readme",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "22.20.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "clsx": "2.1.1",
+    "electron": "44.3.0",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "lucide-react": "1.45.0",
+    "prettier": "3.9.6",
+    "tailwind-merge": "3.6.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.13",
+    "typescript": "7.0.2",
+    "vite": "7.3.6",
+    "vitest": "5.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "author": "Dimitrios T",
+  "desktopName": "hostserrer.desktop",
+  "main": "out/main/index.cjs"
+}

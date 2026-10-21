@@ -1,0 +1,46 @@
+# dependencies
+node_modules/
+.pnp.*
+.yarn/*
+
+# build output
+dist/
+dist-electron/
+out/
+build/release/
+*.tsbuildinfo
+
+# packaged installers
+release/
+*.dmg
+*.exe
+*.AppImage
+*.deb
+*.rpm
+*.snap
+*.zip
+*.blockmap
+
+# local dev
+.env
+.env.local
+*.local
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# test / coverage
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+
+# hostserrer dev sandbox — never commit a real or fake hosts file
+sandbox-hosts*
+*.hosts.bak
+
+*.code-workspace
